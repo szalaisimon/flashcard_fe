@@ -1,0 +1,56 @@
+<div class="register-form-container">
+  @if (registered()) {
+    <section class="register-form" role="status"><h1>Registration successful</h1><p>Your account is ready. You can now log in.</p><a class="action-button" routerLink="/login">Login</a></section>
+  } @else {
+  <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    @if (error()) { <p class="error-message" role="alert">{{ error() }}</p> }
+    <div class="field">
+      <input
+        type="text"
+        id="username" autocomplete="username" maxlength="50"
+        placeholder=" "
+        formControlName="username"
+        [class.invalid]="isInvalid('username')"
+        required
+      />
+      <label for="username">Username</label>
+      @if (isInvalid('username')) {
+        <p class="error">Enter a username of 3–50 characters.</p>
+      }
+    </div>
+
+    <div class="field">
+      <input
+        type="email"
+        id="email" autocomplete="email" maxlength="254"
+        placeholder=" "
+        formControlName="email"
+        [class.invalid]="isInvalid('email')"
+        required
+      />
+      <label for="email">Email</label>
+      @if (isInvalid('email')) {
+        <p class="error">Enter a valid email address (up to 254 characters).</p>
+      }
+    </div>
+
+    <div class="field">
+      <input
+        type="password"
+        id="password" autocomplete="new-password" maxlength="72"
+        placeholder=" "
+        formControlName="password"
+        [class.invalid]="isInvalid('password')"
+        required
+      />
+      <label for="password">Password</label>
+      @if (isInvalid('password')) {
+        <p class="error">Enter a password of 8–72 characters.</p>
+      }
+    </div>
+
+    <button type="submit" [disabled]="busy()">{{ busy() ? 'Registering…' : 'Register' }}</button>
+    <a routerLink="/login">Already have an account? Login</a>
+  </form>
+  }
+</div>

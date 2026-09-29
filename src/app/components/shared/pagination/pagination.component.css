@@ -1,0 +1,88 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.pagination-container button {
+  background-color: var(--midnight-blue);
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  border: 1px solid var(--midnight-blue);
+}
+
+.pagination-container button:hover {
+  background-color: var(--mist-gray);
+  transform: scale(1.05);
+}
+
+.pagination-container button:hover img {
+  filter: none;
+}
+
+.pagination-container button:disabled {
+  background-color: var(--midnight-blue);
+  opacity: 50%;
+  cursor: not-allowed;
+}
+
+.pagination-container button:disabled img {
+  filter: invert(1);
+}
+
+:host {
+  display: block;
+  background-color: var(--mist-gray);
+}
+
+.pagination-container button img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+
+.pagination-container span {
+  font-weight: bold;
+}
+
+.pagination-container select {
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: var(--midnight-blue);
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid var(--midnight-blue);
+  min-width: 80px;
+}
+
+.pagination-container select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+  .pagination-container {
+    gap: 8px;
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .pagination-container button img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .pagination-container select {
+    font-size: 13px;
+    padding: 5px 8px;
+    min-width: 70px;
+  }
+}

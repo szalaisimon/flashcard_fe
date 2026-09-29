@@ -1,0 +1,56 @@
+<div class="back-container"><a class="action-button" routerLink="/deck">Back to decks</a><h1 class="deck-title">{{ deck()?.name ?? 'Deck' }}</h1></div>
+@if (loading()) {
+  <div class="state-panel" role="status">Loading deck…</div>
+} @else if (error()) {
+  <div class="state-panel" role="alert"><p>{{ error() }}</p><button class="action-button" (click)="loadDeck()">Retry</button></div>
+} @else if (deck(); as currentDeck) {
+  <div class="action-row">
+    <button class="action-button" (click)="openModal('rename')" [disabled]="busy()">Rename deck</button>
+    <button class="action-button" (click)="openModal('deleteDeck')" [disabled]="busy()">Delete deck</button>
+    <button class="action-button" (click)="startAttempt()" [disabled]="busy() || (!currentDeck.activeAttemptId && !currentDeck.numberOfCards)">{{ currentDeck.activeAttemptId ? 'Resume practice' : 'Start practice' }}</button>
+    @if (currentDeck.activeAttemptId) { <button class="action-button" (click)="openModal('abort')" [disabled]="busy()">Abort practice</button> }
+  </div>
+  @if (actionError() && !modal()) { <p class="state-panel error-message" role="alert">{{ actionError() }}</p> }
+  <div class="flashcard-container">
+    <div class="flashcard-all">
+      @if (!currentDeck.cards.length) { <p class="status-message">This deck is empty. Add a card to start practicing.</p> }
+      @for (card of currentDeck.cards; track card.id) {
+        @if (editingCard()?.id === card.id) {
+          <app-card-create [deckId]="currentDeck.id" [card]="card" (created)="onCardSaved()" (visibleChange)="editingCard.set(null)" />
+        } @else {
+          <article class="flashcard-row">
+            <div class="flashcard-question"><strong>Question</strong><p>{{ card.question }}</p></div>
+            <div class="flashcard-answer"><strong>Answer</strong><p>{{ card.answer }}</p></div>
+            <div class="flashcard-buttons">
+              <button type="button" (click)="editCard(card)" [disabled]="busy() || !!editingCard() || formVisible()">Edit</button>
+              <button type="button" (click)="openModal('deleteCard', card)" [disabled]="busy() || !!editingCard() || formVisible()">Delete</button>
+            </div>
+          </article>
+        }
+      }
+    </div>
+    <div class="flashcard-create-container">
+      @if (formVisible()) {
+        <app-card-create [deckId]="currentDeck.id" (created)="onCardSaved()" (visibleChange)="formVisible.set($event)" />
+      } @else {
+        <div class="flashcard-create-button"><button type="button" (click)="createCard()" [disabled]="busy() || !!editingCard()">Add card</button></div>
+      }
+    </div>
+  </div>
+}
+@if (modal(); as action) {
+  <app-modal [title]="action === 'rename' ? 'Rename deck' : action === 'deleteDeck' ? 'Delete deck' : action === 'deleteCard' ? 'Delete card' : 'Abort practice'" [busy]="busy()" [confirmLabel]="action === 'rename' ? 'Save' : action === 'abort' ? 'Abort practice' : 'Delete'" (closeEvent)="closeModal()" (submitEvent)="submitModal()">
+    @if (action === 'rename') {
+      <form class="editor-form" [formGroup]="renameForm" (ngSubmit)="submitModal()"><label for="deckName">Deck name</label><input id="deckName" formControlName="name" maxlength="100" [readOnly]="busy()">
+        @if (renameForm.controls.name.invalid && renameForm.controls.name.touched) { <p class="error">Enter a deck name of 1–100 characters.</p> }
+      </form>
+    } @else if (action === 'deleteDeck') {
+      <p>Delete “{{ deck()?.name }}”? Its practice history and any practice in progress will remain available in History.</p>
+    } @else if (action === 'deleteCard') {
+      <p>Delete this card? Existing practice sessions keep their original content.</p><p class="card-preview">{{ deletingCard()?.question }}</p>
+    } @else {
+      <p>Permanently abort this practice? Saved ratings remain in History. This practice cannot be resumed.</p>
+    }
+    @if (actionError()) { <p class="error-message" role="alert">{{ actionError() }}</p> }
+  </app-modal>
+}

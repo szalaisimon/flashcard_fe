@@ -1,0 +1,14 @@
+<div class="app-wrapper">
+  <app-header />
+  @if (showNavbar()) { <app-navbar /> }
+  <main class="main-content">
+    @if (auth.initializationError()) {
+      <div class="state-panel" role="alert">
+        <p>{{ auth.initializationError() }}</p>
+        <button type="button" class="action-button" (click)="retryAuthentication()">Retry session check</button>
+      </div>
+    }
+    <router-outlet />
+  </main>
+  <app-footer />
+</div>

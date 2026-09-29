@@ -1,0 +1,12 @@
+<div class="modal-backdrop" (click)="closeModal()"></div>
+<section class="modal-container" role="dialog" aria-modal="true" [attr.aria-label]="title" (keydown.escape)="closeModal()">
+  <div class="modal-header">
+    <span>{{ title }}</span>
+    <button type="button" class="modal-close" (click)="closeModal()" [disabled]="busy" aria-label="Close dialog">×</button>
+  </div>
+  <div class="modal-content"><ng-content /></div>
+  <div class="modal-footer">
+    <button type="button" (click)="closeModal()" [disabled]="busy">Cancel</button>
+    <button type="button" (click)="submitModal()" [disabled]="busy">{{ busy ? 'Saving…' : confirmLabel }}</button>
+  </div>
+</section>

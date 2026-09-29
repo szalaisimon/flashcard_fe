@@ -1,0 +1,32 @@
+<div class="header-container">
+  <div class="header-bar">
+    <div class="header-bar-left">
+      <a routerLink="/"><img src="assets/icons/logo.png" alt="Home"></a>
+      <span class="version-badge">{{ version }}</span>
+    </div>
+    <div class="header-bar-center">FlashCard Application</div>
+    <div class="header-bar-right">
+      @if (authService.currentUserSig() === undefined) {
+        <span role="status">{{ authService.initializationError() ? 'Session check unavailable' : 'Checking session…' }}</span>
+      } @else if (authService.currentUserSig()) {
+        <span>{{ authService.currentUserSig() }}</span>
+        <button type="button" class="logout-button" (click)="logout()" [disabled]="busy()">{{ busy() ? 'Logging out…' : 'Logout' }}</button>
+      } @else {
+        <div><a routerLink="/login">Login</a><a routerLink="/register">Register</a></div>
+      }
+    </div>
+    <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen" [attr.aria-expanded]="menuOpen" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" [class.open]="menuOpen">
+    @if (authService.currentUserSig() === undefined) {
+      <span>{{ authService.initializationError() ? 'Session check unavailable' : 'Checking session…' }}</span>
+    } @else if (authService.currentUserSig()) {
+      <span>{{ authService.currentUserSig() }}</span>
+      <button type="button" class="logout-button" (click)="logout()" [disabled]="busy()">{{ busy() ? 'Logging out…' : 'Logout' }}</button>
+    } @else {
+      <a routerLink="/login" (click)="toggleMenu()">Login</a>
+      <a routerLink="/register" (click)="toggleMenu()">Register</a>
+    }
+  </div>
+  @if (error()) { <p class="header-error" role="alert">{{ error() }}</p> }
+</div>

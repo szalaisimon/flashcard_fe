@@ -1,0 +1,30 @@
+.flashcard-container {
+  width: min(90%, 700px);
+  margin: 2rem auto;
+  text-align: center;
+  color: var(--midnight-blue);
+  font-family: "Roboto", sans-serif;
+}
+
+h1, p { overflow-wrap: anywhere; }
+.attempt-status { font-weight: 700; }
+
+.flashcard, .score-screen {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 2rem;
+  border: 2px solid var(--midnight-blue);
+  border-radius: 14px;
+  background-color: var(--mist-gray);
+  box-shadow: 0 8px 24px rgba(25, 25, 112, .15);
+}
+
+.flashcard { min-height: 240px; }
+.flashcard p { white-space: pre-wrap; line-height: 1.6; font-size: 1.15rem; }
+.answer-visible { background-color: var(--midnight-blue); color: var(--mist-gray); }
+.score { font-size: 1.4rem; }
+
+@media (max-width: 600px) {
+  .flashcard, .score-screen { padding: 1.25rem; }
+  .action-row { gap: .5rem; }
+}

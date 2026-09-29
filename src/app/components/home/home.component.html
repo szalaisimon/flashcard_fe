@@ -1,0 +1,26 @@
+<div class="home-container">
+  <div class="hero-section">
+    <h1>Welcome to Our Platform</h1>
+    <p>Your journey to knowledge starts here. Explore, learn, and grow with us.</p>
+    <button class="cta-button" [routerLink]="authService.currentUserSig() ? '/deck' : '/login'" [disabled]="authService.currentUserSig() === undefined">Get Started</button>
+  </div>
+
+  <div class="features-section">
+    <a class="feature" [routerLink]="authService.currentUserSig() ? '/deck' : '/login'">
+      <img src="assets/images/interactive.png" alt="Feature 1">
+      <h3>Play & Learn</h3>
+      <p>Jump into your decks and test yourself with interactive flashcard sessions.</p>
+    </a>
+    <a class="feature" [routerLink]="authService.currentUserSig() ? '/deck' : '/login'">
+      <img src="assets/images/custom_deck.png" alt="Feature 2">
+      <h3>Create and Manage Decks</h3>
+      <p>Build your own flashcard decks, edit them anytime, and keep everything organized.</p>
+    </a>
+    <a class="feature" [routerLink]="authService.currentUserSig() ? '/history' : '/login'">
+      <img src="assets/images/stats.png" alt="Feature 3">
+      <h3>Review Your History</h3>
+      <p>Look back at your past sessions and see how far you've come.</p>
+    </a>
+  </div>
+
+</div>

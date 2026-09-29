@@ -1,0 +1,30 @@
+<div class="deck-attempt-history-wrapper">
+  <h1>Practice details</h1>
+  <a class="action-button" routerLink="/history">Back to history</a>
+  @if (loading()) {
+    <p class="status-message" role="status">Loading practice details…</p>
+  } @else if (error()) {
+    <div class="state-panel" role="alert"><p>{{ error() }}</p><button class="action-button" (click)="loadHistory()">Retry</button></div>
+  } @else if (fullDeckAttempt(); as attempt) {
+    <section class="state-panel">
+      <h2>{{ attempt.deck.name }}</h2>
+      <p><strong>{{ statusLabel[attempt.status] }}</strong></p>
+      <p>Score: <strong>{{ attempt.score }} / {{ attempt.maxScore }}</strong></p>
+      <p>Correct: {{ attempt.score }} · Incorrect: {{ attempt.incorrectCount }} · Unanswered: {{ attempt.unansweredCount }}</p>
+      <p>Started: {{ attempt.attemptedAt | date:'yyyy-MM-dd HH:mm:ss':'UTC' }} UTC</p>
+      @if (attempt.endedAt) { <p>Ended: {{ attempt.endedAt | date:'yyyy-MM-dd HH:mm:ss':'UTC' }} UTC</p> }
+      @if (attempt.status === 'IN_PROGRESS') { <a class="action-button" [routerLink]="['/deckattempt', attempt.deckAttemptId]">Resume practice</a> }
+      <p>Deck name and cards show the content saved when this practice started.</p>
+    </section>
+    <div class="history-container">
+      <div class="history-header"><div>Question</div><div>Answer</div><div>Rating</div></div>
+      @for (card of attempt.fullCardAttemptDtos; track card.flashCardId) {
+        <article class="history-row" [class.correct]="card.correct === true" [class.incorrect]="card.correct === false">
+          <div><strong class="mobile-label">Question</strong><p>{{ card.question }}</p></div>
+          <div><strong class="mobile-label">Answer</strong><p>{{ card.answer }}</p></div>
+          <div><strong>{{ card.correct === null ? 'Unanswered' : card.correct ? 'Correct — Knew it' : "Incorrect — Didn't know it" }}</strong></div>
+        </article>
+      }
+    </div>
+  }
+</div>

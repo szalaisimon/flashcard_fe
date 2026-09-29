@@ -1,0 +1,58 @@
+<div class="flashcard-container">
+  @if (loading()) {
+    <p class="status-message" role="status">Loading practice…</p>
+  }
+  @if (error() && !showAbortDialog()) {
+    <div class="error-message" role="alert"><p>{{ error() }}</p><button class="action-button" type="button" (click)="loadAttempt()" [disabled]="busy() || loading()">Reload progress</button></div>
+  }
+  @if (notice()) { <p class="status-message" role="status">{{ notice() }}</p> }
+  @if (attempt(); as currentAttempt) {
+    <h1>{{ currentAttempt.deck.name }}</h1>
+    <p class="attempt-status">{{ statusLabel[currentAttempt.status] }}</p>
+    <p>Correct: {{ currentAttempt.score }} · Incorrect: {{ currentAttempt.incorrectCount }} · Unanswered: {{ currentAttempt.unansweredCount }}</p>
+    @if (currentAttempt.status === 'IN_PROGRESS') {
+      @if (currentFlashcard(); as card) {
+        <p>Card {{ currentAttempt.maxScore - currentAttempt.unansweredCount + 1 }} of {{ currentAttempt.maxScore }}</p>
+        <section class="flashcard" [class.answer-visible]="isFlipped()" aria-live="polite" [attr.aria-busy]="busy()">
+          <h2>{{ isFlipped() ? 'Answer' : 'Question' }}</h2>
+          <p>{{ isFlipped() ? card.answer : card.question }}</p>
+        </section>
+        <div class="action-row">
+          <button class="action-button" type="button" (click)="flipCard()" [disabled]="busy() || loading() || reloadRequired()">{{ isFlipped() ? 'Show question' : 'Show answer' }}</button>
+        </div>
+        @if (isFlipped()) {
+          <div class="action-row">
+            <button class="action-button" type="button" (click)="rateCard(false)" [disabled]="busy() || loading() || reloadRequired()">Didn't know it</button>
+            <button class="action-button" type="button" (click)="rateCard(true)" [disabled]="busy() || loading() || reloadRequired()">Knew it</button>
+          </div>
+        } @else {
+          <p>Reveal the answer before rating this card.</p>
+        }
+        @if (busy()) { <p role="status">Saving progress…</p> }
+      }
+      <p>Your saved ratings will be here when you return.</p>
+      <div class="action-row">
+        <a class="action-button" routerLink="/history">Back to history</a>
+        <button class="action-button" type="button" (click)="openAbortDialog()" [disabled]="busy() || loading() || reloadRequired()">Abort practice</button>
+      </div>
+    } @else {
+      <section class="score-screen" aria-live="polite">
+        <h2>Results</h2>
+        <p class="score">Score: <strong>{{ currentAttempt.score }} / {{ currentAttempt.maxScore }}</strong></p>
+        @if (currentAttempt.status === 'ABORTED') { <p>This practice was permanently aborted. Unanswered cards do not count as incorrect.</p> }
+        <p>Started: {{ currentAttempt.attemptedAt | date:'yyyy-MM-dd HH:mm:ss':'UTC' }} UTC</p>
+        <p>Ended: {{ currentAttempt.endedAt | date:'yyyy-MM-dd HH:mm:ss':'UTC' }} UTC</p>
+        <div class="action-row">
+          <a class="action-button" [routerLink]="['/history', currentAttempt.deckAttemptId]">View details</a>
+          <a class="action-button" routerLink="/deck">Back to decks</a>
+        </div>
+      </section>
+    }
+  }
+</div>
+@if (showAbortDialog()) {
+  <app-modal title="Abort practice" confirmLabel="Abort practice" [busy]="busy()" (closeEvent)="closeAbortDialog()" (submitEvent)="abortAttempt()">
+    <p>Permanently abort this practice? Saved ratings remain in History. This practice cannot be resumed.</p>
+    @if (error()) { <p class="error-message" role="alert">{{ error() }}</p> }
+  </app-modal>
+}

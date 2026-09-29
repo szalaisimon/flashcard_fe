@@ -1,0 +1,27 @@
+<div class="history-wrapper">
+  <h1>History</h1>
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" [totalItems]="totalItems" [limit]="limit" [disabled]="loading()" (pageChange)="onPageChange($event)" (limitChange)="onLimitChange($event)" />
+  @if (loading()) {
+    <p class="status-message" role="status">Loading history…</p>
+  } @else if (error()) {
+    <div class="state-panel" role="alert"><p>{{ error() }}</p><button class="action-button" (click)="fetchHistory(currentPage)">Retry</button></div>
+  } @else if (!history().length) {
+    <p class="state-panel">No practice sessions yet. <a routerLink="/deck">Choose a deck to get started.</a></p>
+  } @else {
+    <div class="history-container">
+      <div class="history-header"><div>Deck</div><div>Status</div><div>Results</div><div>Dates (UTC)</div><div>Actions</div></div>
+      @for (attempt of history(); track attempt.deckAttemptId) {
+        <article class="history-row" [ngClass]="getRowClass(attempt)">
+          <h2>{{ attempt.deckDto.name }}</h2>
+          <div><strong>{{ statusLabel[attempt.status] }}</strong></div>
+          <div><strong>Score: {{ attempt.score }} / {{ attempt.maxScore }}</strong><p>Correct: {{ attempt.score }}<br>Incorrect: {{ attempt.incorrectCount }}<br>Unanswered: {{ attempt.unansweredCount }}</p></div>
+          <div><p>Started: {{ attempt.attemptedAt | date:'yyyy-MM-dd HH:mm:ss':'UTC' }}</p>@if (attempt.endedAt) { <p>Ended: {{ attempt.endedAt | date:'yyyy-MM-dd HH:mm:ss':'UTC' }}</p> }</div>
+          <div class="row-actions">
+            <a class="action-button" [routerLink]="['/history', attempt.deckAttemptId]">View details</a>
+            @if (attempt.status === 'IN_PROGRESS') { <a class="action-button" [routerLink]="['/deckattempt', attempt.deckAttemptId]">Resume practice</a> }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>

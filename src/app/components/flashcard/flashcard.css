@@ -1,0 +1,182 @@
+.back-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 80%;
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
+  padding: 1rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.back-container button {
+  background-color: var(--midnight-blue);
+  color: var(--mist-gray);
+  border: 2px solid var(--midnight-blue);
+  border-radius: 25%;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.back-container button:hover {
+  background-color: #000066;
+  transform: scale(1.05);
+}
+
+.icon-button--large {
+  width: 250px;
+  height: 150px;
+}
+
+.flashcard-create-button:has(.icon-button--large) {
+  text-align: center;
+}
+
+.back-container button img {
+  width: 25px;
+  height: 25px;
+  filter: brightness(0) saturate(100%) invert(94%) sepia(6%) saturate(42%) hue-rotate(165deg) brightness(106%) contrast(97%);
+}
+
+.flashcard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  font-family: "Roboto", sans-serif;
+  background-color: transparent;
+  color: var(--midnight-blue);
+}
+
+.flashcard-all {
+  width: 80%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flashcard-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  align-items: center;
+  background-color: var(--mist-gray);
+  border: 2px solid var(--midnight-blue);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(25, 25, 112, 0.15);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.flashcard-row:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(25, 25, 112, 0.25);
+}
+
+.flashcard-question p,
+.flashcard-answer p {
+  font-size: 1rem;
+  margin: 0;
+  color: var(--midnight-blue);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.flashcard-answer p {
+  margin-left: 0;
+}
+
+.flashcard-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.flashcard-buttons button {
+  background-color: var(--midnight-blue);
+  color: var(--mist-gray);
+  border: 2px solid var(--midnight-blue);
+  border-radius: 8px;
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flashcard-buttons button:hover {
+  background-color: #000066;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(25, 25, 112, 0.3);
+}
+
+.flashcard-buttons img {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) saturate(100%) invert(94%) sepia(6%) saturate(42%) hue-rotate(165deg) brightness(106%) contrast(97%);
+}
+
+.flashcard-create-container {
+  width: 80%;
+  max-width: 1000px;
+  padding: 1rem;
+}
+
+.flashcard-create-button {
+  text-align: right;
+}
+
+.flashcard-create-button button {
+  background-color: var(--midnight-blue);
+  color: var(--mist-gray);
+  border: 2px solid var(--midnight-blue);
+  border-radius: 8px;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.flashcard-create-button button:hover {
+  background-color: #000066;
+  transform: scale(1.05);
+}
+
+.deck-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--midnight-blue);
+  margin: 0 0 0 1rem;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--mist-gray);
+  padding: 20px;
+}
+
+.flashcard-create-button img {
+  width: 25px;
+  height: 25px;
+  filter: brightness(0) saturate(100%) invert(94%) sepia(6%) saturate(42%) hue-rotate(165deg) brightness(106%) contrast(97%);
+}
+
+@media (max-width: 700px) {
+  .flashcard-all,
+  .flashcard-create-container {
+    width: 95%;
+  }
+
+  .flashcard-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .flashcard-buttons {
+    justify-content: flex-end;
+  }
+}
+
+.flashcard-row { gap: 1rem; }
+.flashcard-row > div { min-width: 0; }
+.deck-title, .card-preview { overflow-wrap: anywhere; }
+.back-container { flex-wrap: wrap; gap: 1rem; }
+@media (max-width: 700px) { .flashcard-container { padding: 1rem .25rem; } }

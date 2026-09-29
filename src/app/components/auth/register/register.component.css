@@ -1,0 +1,109 @@
+.register-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  margin: 2rem auto;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background-color: var(--mist-gray);
+  color: var(--midnight-blue);
+  border: 2px solid var(--midnight-blue);
+  box-sizing: border-box;
+}
+
+.register-form .field {
+  position: relative;
+}
+
+.register-form input[type="text"],
+.register-form input[type="password"],
+.register-form input[type="email"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--midnight-blue);
+  border-radius: 12px;
+  background-color: #fff;
+  color: var(--midnight-blue);
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.register-form input[type="text"]:focus,
+.register-form input[type="password"]:focus,
+.register-form input[type="email"]:focus {
+  border-color: #000066;
+  box-shadow: 0 4px 12px rgba(25, 25, 112, 0.2);
+  background-color: #f0f4f8;
+}
+
+.register-form input:focus + label,
+.register-form input:not(:placeholder-shown) + label {
+  top: -0.6rem;
+  left: 0.8rem;
+  font-size: 0.75rem;
+  color: #000066;
+  background-color: var(--mist-gray);
+  padding: 0 0.25rem;
+}
+
+.register-form label {
+  position: absolute;
+  top: 0.8rem;
+  left: 1rem;
+  font-size: 1rem;
+  color: rgba(25, 25, 112, 0.7);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.register-form input.invalid {
+  border-color: var(--error-red);
+  background-color: #ffe5e5;
+}
+
+.register-form .error {
+  color: var(--error-red);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  transition: opacity 0.3s;
+}
+
+.register-form button[type="submit"] {
+  width: 100%;
+  padding: 0.8rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--midnight-blue);
+  color: var(--mist-gray);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  box-sizing: border-box;
+}
+
+.register-form button[type="submit"]:hover {
+  transform: translateY(-2px);
+}
+
+.register-form button[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .register-form {
+    padding: 1.5rem;
+  }
+}

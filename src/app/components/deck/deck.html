@@ -1,0 +1,50 @@
+<div class="deck-container">
+  <div class="deck-info-container"><div class="deck-info"><h1>Decks</h1></div></div>
+  <div class="action-row"><button class="action-button" type="button" (click)="openModal('create')" [disabled]="busy()">Create new deck</button></div>
+  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" [totalItems]="totalItems" [limit]="limit" [disabled]="loading()" (pageChange)="onPageChange($event)" (limitChange)="onLimitChange($event)" />
+  @if (actionError() && !modal()) { <p class="error-message" role="alert">{{ actionError() }}</p> }
+  @if (loading()) {
+    <p class="status-message" role="status">Loading decks…</p>
+  } @else if (error()) {
+    <div class="error-message" role="alert"><p>{{ error() }}</p><button class="action-button" (click)="fetchDecks(currentPage)">Retry</button></div>
+  } @else if (!decks().length) {
+    <p class="status-message">You do not have any decks yet. Create a deck to get started.</p>
+  } @else {
+    <div class="deck-grid">
+      @for (deck of decks(); track deck.id) {
+        <article class="deck-card">
+          <h2 class="deck-card-name">{{ deck.name }}</h2>
+          <p>Cards: {{ deck.numberOfCards }} · Attempts: {{ deck.attempts }}</p>
+          <a class="action-button" [routerLink]="['/deck', deck.id]">View deck</a>
+          <div class="action-row">
+            <button type="button" (click)="openModal('rename', deck)" [disabled]="busy()">Rename</button>
+            <button type="button" (click)="openModal('delete', deck)" [disabled]="busy()">Delete</button>
+          </div>
+          @if (deck.activeAttemptId) {
+            <p>Practice in progress</p>
+            <button type="button" (click)="startAttempt(deck)" [disabled]="busy()">Resume practice</button>
+            <button type="button" (click)="openModal('abort', deck)" [disabled]="busy()">Abort practice</button>
+          } @else {
+            <button type="button" (click)="startAttempt(deck)" [disabled]="busy() || deck.numberOfCards === 0">Start practice</button>
+            @if (deck.numberOfCards === 0) { <p>Add a card to start practicing.</p> }
+          }
+        </article>
+      }
+    </div>
+  }
+</div>
+@if (modal(); as action) {
+  <app-modal [title]="action === 'create' ? 'New deck' : action === 'rename' ? 'Rename deck' : action === 'delete' ? 'Delete deck' : 'Abort practice'" [busy]="busy()" [confirmLabel]="action === 'delete' ? 'Delete deck' : action === 'abort' ? 'Abort practice' : 'Save'" (closeEvent)="closeModal()" (submitEvent)="submitModal()">
+    @if (action === 'create' || action === 'rename') {
+      <form class="editor-form" [formGroup]="createDeckForm" (ngSubmit)="submitModal()">
+        <label for="deckName">Deck name</label><input id="deckName" formControlName="name" maxlength="100" [readOnly]="busy()" required>
+        @if (createDeckForm.controls.name.invalid && createDeckForm.controls.name.touched) { <p class="error">Enter a deck name of 1–100 characters.</p> }
+      </form>
+    } @else if (action === 'delete') {
+      <p>Delete “{{ selectedDeck()?.name }}”? Its practice history and any practice in progress will remain available in History.</p>
+    } @else {
+      <p>Permanently abort the current practice for “{{ selectedDeck()?.name }}”? Saved ratings remain in History. This practice cannot be resumed.</p>
+    }
+    @if (actionError()) { <p class="error-message" role="alert">{{ actionError() }}</p> }
+  </app-modal>
+}

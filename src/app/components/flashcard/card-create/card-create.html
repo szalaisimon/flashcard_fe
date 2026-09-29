@@ -1,0 +1,17 @@
+<form class="form flashcard-row" [formGroup]="createNewForm" (ngSubmit)="onSubmit()">
+  <div class="field">
+    <label [for]="'question-' + (card()?.id ?? 'new')">Question</label>
+    <textarea class="input" [id]="'question-' + (card()?.id ?? 'new')" formControlName="question" [class.invalid]="isInvalid('question')" maxlength="1000" rows="4" [readOnly]="busy()"></textarea>
+    @if (isInvalid('question')) { <p class="error">Enter a question of 1–1000 characters.</p> }
+  </div>
+  <div class="field">
+    <label [for]="'answer-' + (card()?.id ?? 'new')">Answer</label>
+    <textarea class="input" [id]="'answer-' + (card()?.id ?? 'new')" formControlName="answer" [class.invalid]="isInvalid('answer')" maxlength="1000" rows="4" [readOnly]="busy()"></textarea>
+    @if (isInvalid('answer')) { <p class="error">Enter an answer of 1–1000 characters.</p> }
+  </div>
+  <div class="buttons">
+    <button type="submit" class="button" [disabled]="busy()">{{ busy() ? 'Saving…' : 'Save' }}</button>
+    <button type="button" class="button" (click)="onCancel()" [disabled]="busy()">Cancel</button>
+  </div>
+  @if (error()) { <p class="error-message form-error" role="alert">{{ error() }}</p> }
+</form>

@@ -1,0 +1,7 @@
+<div class="navbar-container">
+  @for (navbarElement of navbarElements(); track navbarElement) {
+    <div class="navbar-element" [routerLink]="navbarElement.route" [class.active]="isActive(navbarElement.route)">
+      {{ navbarElement.title }}
+    </div>
+  }
+</div>

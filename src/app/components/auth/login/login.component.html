@@ -1,0 +1,38 @@
+<div class="login-form-container">
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    @if (expired) { <p class="status-message" role="status">Your session has expired. Please log in to continue.</p> }
+    @if (error()) { <p class="error-message" role="alert">{{ error() }}</p> }
+    <div class="field">
+      <input
+        type="text"
+        id="username" autocomplete="username" maxlength="50"
+        placeholder=" "
+        formControlName="username"
+        [class.invalid]="isInvalid('username')"
+        required
+      />
+      <label for="username">Username</label>
+      @if (isInvalid('username')) {
+        <p class="error">Username is required!</p>
+      }
+    </div>
+
+    <div class="field">
+      <input
+        type="password"
+        id="password" autocomplete="current-password" maxlength="72"
+        placeholder=" "
+        formControlName="password"
+        [class.invalid]="isInvalid('password')"
+        required
+      />
+      <label for="password">Password</label>
+      @if (isInvalid('password')) {
+        <p class="error">Password is required!</p>
+      }
+    </div>
+
+    <button type="submit" [disabled]="busy()">{{ busy() ? 'Logging in…' : 'Login' }}</button>
+    <a routerLink="/register">Create an account</a>
+  </form>
+</div>

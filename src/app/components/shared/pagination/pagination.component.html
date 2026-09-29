@@ -1,0 +1,29 @@
+<div class="pagination-container">
+  <button (click)="firstPage()" [disabled]="disabled() || currentPage() === 0">
+    <img src="assets/icons/jump-first.svg" alt="First page">
+  </button>
+
+  <button (click)="previousPage()" [disabled]="disabled() || currentPage() === 0">
+    <img src="assets/icons/previous.svg" alt="Previous page">
+  </button>
+
+  <span>Page {{ totalPages() ? currentPage() + 1 : 0 }} / {{ totalPages() }}</span>
+
+  <button (click)="nextPage()" [disabled]="disabled() || currentPage() >= totalPages() - 1">
+    <img src="assets/icons/next.svg" alt="Next page">
+  </button>
+
+  <button (click)="lastPage()" [disabled]="disabled() || currentPage() >= totalPages() - 1">
+    <img src="assets/icons/jump-last.svg" alt="Last page">
+  </button>
+
+  <select aria-label="Items per page" [disabled]="disabled()" (change)="onLimitChange($event)">
+    <option [value]="4" [selected]="limit() === 4">4 / page</option>
+    <option [value]="8" [selected]="limit() === 8">8 / page</option>
+    <option [value]="16" [selected]="limit() === 16">16 / page</option>
+  </select>
+
+
+  <span>Total items: {{ totalItems() }}</span>
+</div>
+

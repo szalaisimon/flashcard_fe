@@ -1,0 +1,16 @@
+.deck-attempt-history-wrapper { width: 92%; margin: 2rem auto; text-align: center; color: var(--midnight-blue); }
+.history-container { max-width: 1000px; margin: 1.5rem auto; }
+.history-header, .history-row { display: grid; grid-template-columns: 1fr 1fr .6fr; gap: 1rem; padding: 1rem; align-items: center; }
+.history-header { font-weight: 600; background: var(--midnight-blue); color: var(--mist-gray); border-radius: 5px 5px 0 0; }
+.history-row { border-bottom: 1px solid var(--midnight-blue); background: var(--mist-gray); }
+.history-row > * { min-width: 0; }
+.history-row p { white-space: pre-wrap; line-height: 1.5; }
+p, h2 { overflow-wrap: anywhere; }
+.correct { background: #dff0d8; }
+.incorrect { background: #f2dede; }
+.mobile-label { display: none; }
+@media (max-width: 650px) {
+  .history-header { display: none; }
+  .history-row { grid-template-columns: 1fr; border: 2px solid var(--midnight-blue); border-radius: 12px; margin-bottom: 1rem; }
+  .mobile-label { display: block; }
+}
